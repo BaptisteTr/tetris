@@ -4,14 +4,13 @@
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   gap: 0px;
-  /*grid-auto-rows: minmax(20px, auto);*/
 
   /*TODO moduler dynamiquement la taille de la grille*/
-  width: 200px;
-  height: 400px;
+  width: 220px;
+  height: 440px;
   position: fixed;
-  top: 100px;
-  left: 300px;
+  top: 50px;
+  left: 50px;
   border: 1px solid #bdbdbd;
   box-shadow: 0 0 200px 0 #000;
 }

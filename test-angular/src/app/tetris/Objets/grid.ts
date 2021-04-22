@@ -14,19 +14,8 @@ export class Grid {
     }
   }
 
-  display_tetromino(tetromino:Tetromino){
-    if(tetromino.type == "I"){
-      if(tetromino.direction == 1){
-        this.square_list.forEach(function(square){ // TODO implémenter dans une méthode séparée
-          if(square.width_position == tetromino.centerPosX && square.height_position <= tetromino.centerPosY +1 && square.height_position >= tetromino.centerPosY -2)
-          {
-            square.color = tetromino.color;
-          }
-        });
-      } else {
-
-      }
-    }
+  display(tetromino:Tetromino){
+    tetromino.display(this.square_list);
   }
 
 }

@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
+import { interval } from 'rxjs';
 import {Grid} from '../Objets/grid';
-import {Square} from '../Objets/square';
-import { Tetromino } from '../Objets/tetromino';
+import { Tetromino, TetrominoI, TetrominoJ } from '../Objets/tetromino';
 
 @Component({
   selector: 'app-grille',
@@ -17,16 +17,22 @@ export class GrilleComponent implements OnInit {
     this.grid = new Grid(0,0);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.grid = new Grid(this.lines,this.columns);
 
-    let tetromino :Tetromino = new Tetromino("orange","I");
-    tetromino.centerPosX = 5;
-    tetromino.centerPosY = 18;
-    tetromino.direction = 1;
-    this.grid.display_tetromino(tetromino);
+    let tetromino :Tetromino = new TetrominoJ("purple");
+    tetromino.centerPosX = 4;
+    tetromino.centerPosY = 15;
+    tetromino.direction = 2;
 
+    this.grid.display(tetromino);
+
+    setInterval(()=>{
+      tetromino.rotate();
+      this.grid.display(tetromino);
+    },1000);
   }
+
 
 }
