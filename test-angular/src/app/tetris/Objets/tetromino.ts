@@ -10,6 +10,8 @@ export abstract class Tetromino {
   public blocks : Array<Square>;
   public directions : Array<Array<Square>> = new Array();
 
+  public locked = false;
+
   constructor(public color:string = "purple"){
     this.blocks = this.directions[0];
   }
@@ -25,6 +27,19 @@ export abstract class Tetromino {
         }
       }
     );
+  }
+
+  public lock(grid: Grid){
+    this.blocks.forEach(
+      block => {
+        let square = grid.square_list.find(square => square.height_position == (block.height_position + this.centerPosY) && square.width_position == (block.width_position + this.centerPosX) );
+        if(square != undefined){
+          square.filled = true;
+          square.color = this.color;
+        }
+      }
+    );
+    this.locked = true;
   }
 
   public rotate(grid: Grid){
@@ -57,10 +72,10 @@ export abstract class Tetromino {
     }
 
     this.getBlocks().forEach(block => {
-      if(this.centerPosY + block.height_position + posYOffset >= grid.height){
+      if(this.centerPosY + block.height_position + posYOffset >= grid.height || block.isFilled(grid,this.centerPosY + posYOffset,this.centerPosX)){
         resultat= false;
       }
-      if((this.centerPosX + block.width_position + posXOffset < 0) || (this.centerPosX + block.width_position + posXOffset >= grid.width)){
+      if((this.centerPosX + block.width_position + posXOffset < 0) || (this.centerPosX + block.width_position + posXOffset >= grid.width) || block.isFilled(grid,this.centerPosY,this.centerPosX + posXOffset)){
         resultat= false;
       }
     });
@@ -75,6 +90,8 @@ export abstract class Tetromino {
   public checkAndMoveDown(grid:Grid): void{
     if(this.isLegal(grid, 2)){
       this.centerPosY++;
+    } else {
+      this.lock(grid);
     }
   }
 
@@ -90,11 +107,22 @@ export abstract class Tetromino {
     }
   }
 
+  abstract setStartPosition() : void;
+
+  abstract setDefaultPosition() : void;
+
 }
 
 export class TetrominoI extends Tetromino {
 
-  centerPosY: number = -3;
+  setStartPosition(): void {
+    this.centerPosY = -3;
+    this.centerPosX = 4;
+  }
+  setDefaultPosition(): void {
+    this.centerPosY = 2;
+    this.centerPosX = 2;
+  }
 
   private position1 = new Array<Square> (
     new Square(2,0),
@@ -115,6 +143,15 @@ export class TetrominoI extends Tetromino {
 }
 
 export class TetrominoJ extends Tetromino {
+
+  setStartPosition(): void {
+    this.centerPosY = -1;
+    this.centerPosX = 4;
+  }
+  setDefaultPosition(): void {
+    this.centerPosY = 2;
+    this.centerPosX = 2;
+  }
 
   private position1 = new Array<Square> (
     new Square(-1,-1),
@@ -147,6 +184,15 @@ export class TetrominoJ extends Tetromino {
 
 export class TetrominoL extends Tetromino {
 
+  setStartPosition(): void {
+    this.centerPosY = -1;
+    this.centerPosX = 4;
+  }
+  setDefaultPosition(): void {
+    this.centerPosY = 2;
+    this.centerPosX = 2;
+  }
+
   private position1 = new Array<Square> (
     new Square(0,-1),
     new Square(0,0),
@@ -178,7 +224,14 @@ export class TetrominoL extends Tetromino {
 
 export class TetrominoO extends Tetromino {
 
-  centerPosY: number = -2;
+  setStartPosition(): void {
+    this.centerPosY = -2;
+    this.centerPosX = 4;
+  }
+  setDefaultPosition(): void {
+    this.centerPosY = 2;
+    this.centerPosX = 2;
+  }
 
   private position1 = new Array<Square> (
     new Square(0,0),
@@ -192,6 +245,15 @@ export class TetrominoO extends Tetromino {
 }
 
 export class TetrominoS extends Tetromino {
+
+  setStartPosition(): void {
+    this.centerPosY = -1;
+    this.centerPosX = 4;
+  }
+  setDefaultPosition(): void {
+    this.centerPosY = 2;
+    this.centerPosX = 2;
+  }
 
   private position1 = new Array<Square> (
     new Square(0,0),
@@ -212,6 +274,15 @@ export class TetrominoS extends Tetromino {
 }
 
 export class TetrominoT extends Tetromino {
+
+  setStartPosition(): void {
+    this.centerPosY = -1;
+    this.centerPosX = 4;
+  }
+  setDefaultPosition(): void {
+    this.centerPosY = 2;
+    this.centerPosX = 2;
+  }
 
   private position1 = new Array<Square> (
     new Square(0,0),
@@ -247,7 +318,14 @@ export class TetrominoT extends Tetromino {
 
 export class TetrominoZ extends Tetromino {
 
-  centerPosY: number = -2;
+  setStartPosition(): void {
+    this.centerPosY = -2;
+    this.centerPosX = 4;
+  }
+  setDefaultPosition(): void {
+    this.centerPosY = 2;
+    this.centerPosX = 2;
+  }
 
   private position1 = new Array<Square> (
     new Square(0,0),
