@@ -1,5 +1,4 @@
-import {Component, HostListener, Inject, OnInit} from '@angular/core';
-import { interval, Observable, Subscription } from 'rxjs';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Grid} from '../Objets/grid';
 import { Tetromino, TetrominoI, TetrominoJ, TetrominoL, TetrominoO, TetrominoS, TetrominoT, TetrominoZ } from '../Objets/tetromino';
 
@@ -18,7 +17,9 @@ export class GrilleComponent implements OnInit {
   constructor() {
     this.grid = new Grid(0,0);
     this.currentTetromino = this.randomTetromino();
+    this.currentTetromino.setStartPosition();
     this.nextTetromino = this.randomTetromino();
+    this.nextTetromino.setDefaultPosition();
   }
 
   async ngOnInit() {
@@ -27,10 +28,45 @@ export class GrilleComponent implements OnInit {
 
     this.grid.display(this.currentTetromino);
 
-    setInterval(()=>{
-      this.currentTetromino.checkAndMoveDown(this.grid);
-      this.grid.display(this.currentTetromino);
-    },1000);
+    setInterval(()=>this.gameplayLoop(),1000);
+  }
+
+  gameplayLoop(){
+    this.currentTetromino.checkAndMoveDown(this.grid);
+    if(this.currentTetromino.locked){
+      this.currentTetromino = this.nextTetromino;
+      this.nextTetromino = this.randomTetromino();
+      this.nextTetromino.setDefaultPosition();
+      this.currentTetromino.setStartPosition();
+
+      this.cleanCompletedLines();
+    }
+    this.grid.display(this.currentTetromino);
+  }
+
+  cleanCompletedLines(){
+    for(let y:number = this.lines; y >= 0; y--){
+      let line = this.grid.square_list.filter(block => (block.height_position == y && block.filled));
+      if(line.length == this.columns){
+
+        for(let y2:number = y; y2 >= 0; y2--)
+        {
+          let currentLine = this.grid.square_list.filter(block => (block.height_position == y2));
+
+          let upperLine = this.grid.square_list.filter(block => (block.height_position == y2-1));
+
+          currentLine.forEach(block => {
+            let upperBlock = upperLine.find(upperBlock => upperBlock.width_position == block.width_position);
+
+            if(upperBlock != undefined){
+              block.color = upperBlock.color;
+              block.filled = upperBlock.filled;
+            }
+          });
+        }
+        y++;
+      }
+    }
   }
 
   onArrowLeft(){
@@ -58,6 +94,10 @@ export class GrilleComponent implements OnInit {
     this.grid.display(this.currentTetromino);
   }
 
+  onL(){
+    this.currentTetromino.lock(this.grid);
+  }
+
 
   randomTetromino(): Tetromino {
     const tetrominos = [TetrominoI, TetrominoJ, TetrominoL, TetrominoO, TetrominoS, TetrominoT, TetrominoZ];
@@ -80,8 +120,12 @@ export class GrilleComponent implements OnInit {
     this.onArrowUp();
    } else if(event.key == " "){
     this.onSpaceBar();
+   } else if(event.key == "l"){
+    this.onL();
    } else {
      console.log(event.key);
    }
   }
 }
+
+
