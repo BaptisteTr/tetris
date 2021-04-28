@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GrilleComponent } from './tetris/grille/grille.component';
+import { TetrisComponent } from './tetris/tetris.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/tetris', pathMatch: 'full' },
-  { path: 'tetris', component: GrilleComponent }
+  { path: 'tetris', component: TetrisComponent }
 ];
 
 @NgModule({

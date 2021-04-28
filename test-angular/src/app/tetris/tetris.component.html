@@ -1,0 +1,10 @@
+
+<section >
+  <app-grille (scoreChanged)="scoreChangedHandler($event)" (tetrominoChanged)="nextTetrominoChangedHandler($event)"></app-grille>
+
+  <div id="scoreBar">
+    <app-next-tetromino [tetromino]="this.nextTetromino"></app-next-tetromino>
+
+    <app-score-counter [score]="this.score"></app-score-counter>
+  </div>
+</section>
