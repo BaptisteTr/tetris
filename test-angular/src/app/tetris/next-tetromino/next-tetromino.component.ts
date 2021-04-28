@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Grid } from '../tetris/Objets/grid';
+import { Grid } from '../Objets/grid';
 
 @Component({
   selector: 'app-next-tetromino',
@@ -16,7 +16,8 @@ export class NextTetrominoComponent implements OnInit, OnChanges  {
   constructor() {
 
   }
-  ngOnChanges(changes: SimpleChanges): void {
+
+  ngOnChanges(): void {
     this.refresh();
   }
 
@@ -26,7 +27,10 @@ export class NextTetrominoComponent implements OnInit, OnChanges  {
   }
 
   refresh(): void{
-    this.grid.display(this.tetromino);
+
+    if(this.tetromino != null){
+      this.grid.display(this.tetromino);
+    }
   }
 
 }

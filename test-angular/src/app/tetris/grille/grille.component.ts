@@ -1,5 +1,7 @@
+import { EventEmitter, Output } from '@angular/core';
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Grid} from '../Objets/grid';
+import { Score } from '../Objets/score';
 import { Tetromino, TetrominoI, TetrominoJ, TetrominoL, TetrominoO, TetrominoS, TetrominoT, TetrominoZ } from '../Objets/tetromino';
 
 @Component({
@@ -13,6 +15,12 @@ export class GrilleComponent implements OnInit {
   public columns: number = 10;
   public currentTetromino:Tetromino;
   public nextTetromino:Tetromino;
+  public score:Score = new Score();
+  public speedValue = 1000;
+
+  @Output() tetrominoChanged =  new EventEmitter<Tetromino>();
+  @Output() scoreChanged =  new EventEmitter<Score>();
+
 
   constructor() {
     this.grid = new Grid(0,0);
@@ -25,10 +33,11 @@ export class GrilleComponent implements OnInit {
   async ngOnInit() {
 
     this.grid = new Grid(this.lines,this.columns);
-
     this.grid.display(this.currentTetromino);
 
-    setInterval(()=>this.gameplayLoop(),1000);
+    this.tetrominoChanged.emit(this.nextTetromino);
+
+    setInterval(()=>this.gameplayLoop(),this.speedValue);
   }
 
   gameplayLoop(){
@@ -37,6 +46,7 @@ export class GrilleComponent implements OnInit {
       this.currentTetromino = this.nextTetromino;
       this.nextTetromino = this.randomTetromino();
       this.nextTetromino.setDefaultPosition();
+      this.tetrominoChanged.emit(this.nextTetromino);
       this.currentTetromino.setStartPosition();
 
       this.cleanCompletedLines();
@@ -45,15 +55,15 @@ export class GrilleComponent implements OnInit {
   }
 
   cleanCompletedLines(){
+    let lineCount = 0;
     for(let y:number = this.lines; y >= 0; y--){
       let line = this.grid.square_list.filter(block => (block.height_position == y && block.filled));
       if(line.length == this.columns){
-
+        lineCount++;
         for(let y2:number = y; y2 >= 0; y2--)
         {
-          let currentLine = this.grid.square_list.filter(block => (block.height_position == y2));
-
-          let upperLine = this.grid.square_list.filter(block => (block.height_position == y2-1));
+          let currentLine = this.getLine(y2);
+          let upperLine = this.getLine(y2-1);
 
           currentLine.forEach(block => {
             let upperBlock = upperLine.find(upperBlock => upperBlock.width_position == block.width_position);
@@ -67,6 +77,19 @@ export class GrilleComponent implements OnInit {
         y++;
       }
     }
+    if(lineCount > 0){
+
+      let score = this.calculateScore(lineCount,this.score.vitesse);
+      this.score.lineScore = this.score.lineScore+lineCount;
+      this.score.pointScore = this.score.pointScore+score;
+      this.score.vitesse = Math.floor(this.score.lineScore/10);
+      this.speedValue =  725 * .85 ^ this.score.vitesse + this.score.vitesse;
+      this.scoreChanged.emit(this.score);
+    }
+  }
+
+  getLine(lineNumber: number){
+    return this.grid.square_list.filter(block => (block.height_position == lineNumber));
   }
 
   onArrowLeft(){
@@ -108,6 +131,36 @@ export class GrilleComponent implements OnInit {
   }
 
 
+
+
+  calculateScore(lineCount: number, vitesse: number) : number {
+    let baseValue = 40;
+    switch(lineCount){
+      case 1: {
+        baseValue = 40;
+        break;
+      }
+      case 2: {
+        baseValue = 100;
+        break;
+      }
+      case 3: {
+        baseValue = 300;
+        break;
+      }
+      case 4: {
+        baseValue = 1200;
+        break;
+      }
+      default : {
+        baseValue = 0;
+      }
+    }
+    return baseValue * (vitesse + 1);;
+  }
+
+
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
    if(event.key == "ArrowLeft"){
@@ -127,5 +180,3 @@ export class GrilleComponent implements OnInit {
    }
   }
 }
-
-
