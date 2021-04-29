@@ -10,48 +10,66 @@ import { Tetromino, TetrominoI, TetrominoJ, TetrominoL, TetrominoO, TetrominoS, 
   styleUrls: ['./grille.component.css']
 })
 export class GrilleComponent implements OnInit {
-  public grid : Grid;
+  public grid : Grid = new Grid(0,0);
   public lines: number = 20;
   public columns: number = 10;
   public currentTetromino:Tetromino;
   public nextTetromino:Tetromino;
   public score:Score = new Score();
-  public speedValue = 1000;
+  public speedValue;
+  private tLastDown: any;
+  private tcurrent: any;
+  public isGameOver: boolean;
 
   @Output() tetrominoChanged =  new EventEmitter<Tetromino>();
   @Output() scoreChanged =  new EventEmitter<Score>();
 
 
   constructor() {
-    this.grid = new Grid(0,0);
     this.currentTetromino = this.randomTetromino();
     this.currentTetromino.setStartPosition();
     this.nextTetromino = this.randomTetromino();
     this.nextTetromino.setDefaultPosition();
+    this.speedValue =  725;
+    this.isGameOver = false;
   }
 
   async ngOnInit() {
 
-    this.grid = new Grid(this.lines,this.columns);
-    this.grid.display(this.currentTetromino);
+    this.tLastDown = performance.now();
 
+    this.grid = new Grid(this.lines,this.columns);
     this.tetrominoChanged.emit(this.nextTetromino);
 
-    setInterval(()=>this.gameplayLoop(),this.speedValue);
+    setInterval(()=>this.gameplayLoop(),1000/60);
+  }
+
+  draw(){
+    this.grid.display(this.currentTetromino);
   }
 
   gameplayLoop(){
-    this.currentTetromino.checkAndMoveDown(this.grid);
-    if(this.currentTetromino.locked){
-      this.currentTetromino = this.nextTetromino;
-      this.nextTetromino = this.randomTetromino();
-      this.nextTetromino.setDefaultPosition();
-      this.tetrominoChanged.emit(this.nextTetromino);
-      this.currentTetromino.setStartPosition();
+    if(this.isGameOver == false){
+      this.tcurrent = performance.now();
 
-      this.cleanCompletedLines();
+      if(this.tcurrent - this.tLastDown >= this.speedValue){
+        this.currentTetromino.checkAndMoveDown(this.grid);
+        this.tLastDown = this.tcurrent;
+      }
+      if(this.currentTetromino.locked){
+        if(this.currentTetromino.blocks.find(block => this.currentTetromino.centerPosY+block.height_position == 0) != undefined){
+          this.isGameOver = true;
+        } else {
+          this.currentTetromino = this.nextTetromino;
+          this.nextTetromino = this.randomTetromino();
+          this.nextTetromino.setDefaultPosition();
+          this.tetrominoChanged.emit(this.nextTetromino);
+          this.currentTetromino.setStartPosition();
+        }
+
+        this.cleanCompletedLines();
+      }
     }
-    this.grid.display(this.currentTetromino);
   }
 
   cleanCompletedLines(){
@@ -82,8 +100,12 @@ export class GrilleComponent implements OnInit {
       let score = this.calculateScore(lineCount,this.score.vitesse);
       this.score.lineScore = this.score.lineScore+lineCount;
       this.score.pointScore = this.score.pointScore+score;
-      this.score.vitesse = Math.floor(this.score.lineScore/10);
-      this.speedValue =  725 * .85 ^ this.score.vitesse + this.score.vitesse;
+      if(Math.floor(this.score.lineScore/10) > this.score.vitesse){
+        this.score.vitesse++;
+        let speedChange = this.speedValue/3;
+        this.speedValue -=  speedChange;
+      }
+
       this.scoreChanged.emit(this.score);
     }
   }
@@ -94,27 +116,22 @@ export class GrilleComponent implements OnInit {
 
   onArrowLeft(){
     this.currentTetromino.checkAndMoveLeft(this.grid);
-    this.grid.display(this.currentTetromino);
   }
 
   onArrowRight(){
     this.currentTetromino.checkAndMoveRight(this.grid);
-    this.grid.display(this.currentTetromino);
   }
 
   onArrowDown(){
     this.currentTetromino.checkAndMoveDown(this.grid);
-    this.grid.display(this.currentTetromino);
   }
 
   onArrowUp(){
     this.currentTetromino.centerPosY--;
-    this.grid.display(this.currentTetromino);
   }
 
   onSpaceBar(){
     this.currentTetromino.rotate(this.grid);
-    this.grid.display(this.currentTetromino);
   }
 
   onL(){
