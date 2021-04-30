@@ -20,6 +20,9 @@ export class GrilleComponent implements OnInit {
   private tLastDown: any;
   private tcurrent: any;
   public isGameOver: boolean;
+  private gridCenterX: number;
+  private gridCenterY: number;
+  displayGameOver: string;
 
   @Output() tetrominoChanged =  new EventEmitter<Tetromino>();
   @Output() scoreChanged =  new EventEmitter<Score>();
@@ -32,6 +35,9 @@ export class GrilleComponent implements OnInit {
     this.nextTetromino.setDefaultPosition();
     this.speedValue =  725;
     this.isGameOver = false;
+    this.gridCenterX = this.lines *20;
+    this.gridCenterY = this.columns *20;
+    this.displayGameOver = "none";
   }
 
   async ngOnInit() {
@@ -50,6 +56,7 @@ export class GrilleComponent implements OnInit {
 
   gameplayLoop(){
     if(this.isGameOver == false){
+      this.displayGameOver="none";
       this.tcurrent = performance.now();
 
       if(this.tcurrent - this.tLastDown >= this.speedValue){
@@ -69,6 +76,8 @@ export class GrilleComponent implements OnInit {
 
         this.cleanCompletedLines();
       }
+    } else {
+      this.displayGameOver="block";
     }
   }
 
@@ -187,7 +196,7 @@ export class GrilleComponent implements OnInit {
    } else if(event.key == "ArrowDown"){
     this.onArrowDown();
    } else if(event.key == "ArrowUp"){
-    this.onArrowUp();
+    //this.onArrowUp();
    } else if(event.key == " "){
     this.onSpaceBar();
    } else if(event.key == "l"){

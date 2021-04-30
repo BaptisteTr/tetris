@@ -65,3 +65,17 @@ section {
   top: 50px;
   left: 50px;
 }
+
+#gameOver {
+  font-family: fantasy;
+  font-size:70px;
+  color:crimson;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+  z-index: 2;
+  display: var(--display);
+}
