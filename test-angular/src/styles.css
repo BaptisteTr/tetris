@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+
+html{
+background-color: rgb(4, 4, 49);
+
+}
+
+section {
+  max-width: 500px;
+  margin: auto;
+}
+
+#headerContent{
+  height : 100px;
+}

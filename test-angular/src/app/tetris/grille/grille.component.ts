@@ -151,7 +151,7 @@ export class GrilleComponent implements OnInit {
   randomTetromino(): Tetromino {
     const tetrominos = [TetrominoI, TetrominoJ, TetrominoL, TetrominoO, TetrominoS, TetrominoT, TetrominoZ];
     var randTetromino = tetrominos[Math.floor(Math.random() * tetrominos.length)];
-    const colors = ["purple","grey","red","orange","turquoise","blue"];
+    const colors = ["purple","grey","turquoise","blue","green","yellow","orange","lightBlue"];
     var randColor = colors[Math.floor(Math.random() * colors.length)];
     return new randTetromino(randColor);
   }
