@@ -20,8 +20,6 @@ export class GrilleComponent implements OnInit {
   private tLastDown: any;
   private tcurrent: any;
   public isGameOver: boolean;
-  private gridCenterX: number;
-  private gridCenterY: number;
   displayGameOver: string;
 
   @Output() tetrominoChanged =  new EventEmitter<Tetromino>();
@@ -35,8 +33,6 @@ export class GrilleComponent implements OnInit {
     this.nextTetromino.setDefaultPosition();
     this.speedValue =  725;
     this.isGameOver = false;
-    this.gridCenterX = this.lines *20;
-    this.gridCenterY = this.columns *20;
     this.displayGameOver = "none";
   }
 

@@ -3,8 +3,11 @@ section {
   display : flex;
   flex-direction: line;
   flex-wrap: wrap;
-  top: 50px;
-  left: 50px;
+  padding:5px;
+}
+
+.children {
+  margin:5px;
 }
 
 #scoreBar {
