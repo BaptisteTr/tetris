@@ -7,6 +7,7 @@ import { GrilleComponent } from './tetris/grille/grille.component';
 import { NextTetrominoComponent } from './tetris/next-tetromino/next-tetromino.component';
 import { TetrisComponent } from './tetris/tetris.component';
 import { ScoreCounterComponent } from './tetris/score-counter/score-counter.component';
+import { CommandBarComponent } from './command-bar/command-bar.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ScoreCounterComponent } from './tetris/score-counter/score-counter.comp
     GrilleComponent,
     NextTetrominoComponent,
     TetrisComponent,
-    ScoreCounterComponent
+    ScoreCounterComponent,
+    CommandBarComponent
   ],
   imports: [
     BrowserModule,

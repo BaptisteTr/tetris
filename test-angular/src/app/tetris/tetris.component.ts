@@ -13,6 +13,10 @@ export class TetrisComponent implements OnInit,AfterViewInit  {
   public nextTetromino:any;
   public score:any;
   public fps:any;
+  public left:any;
+  public right:any;
+  public down:any;
+  public rotate:any;
 
   @ViewChild(GrilleComponent)
   private grille: any;
@@ -34,6 +38,10 @@ export class TetrisComponent implements OnInit,AfterViewInit  {
 
   nextTetrominoChangedHandler(nextTetromino: Tetromino){
     this.nextTetromino = nextTetromino;
+  }
+
+  leftHandler(){
+    this.grille.triggerLeft();
   }
 
   scoreChangedHandler(score:Score){

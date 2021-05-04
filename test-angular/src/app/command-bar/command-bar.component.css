@@ -1,0 +1,34 @@
+.button {
+  width: 30px;
+  height: 30px;
+  border-radius: 2px;
+  border-width: 3px;
+  border-style: outset;
+  background-color: #39d352;
+  border-color:#39d352;
+  box-shadow: inset 0 0 1px 1px #7afd60;
+  margin: 4px;
+}
+
+img {
+  margin:auto;
+  width: 20px;
+  display:block;
+}
+
+.wrapper{
+  height: 90px;
+  width: 200px;
+  display: flex;
+  justify-content: center;
+}
+
+#down {
+  align-self: center;
+}
+
+.break {
+  flex-basis: 100%;
+  height: 0;
+  width: 200px;
+}

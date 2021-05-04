@@ -2,12 +2,11 @@
 
 html{
 background-color: rgb(4, 4, 49);
-
 }
 
 section {
-  max-width: 500px;
-  margin: auto;
+  max-width: 700px;
+  margin: 30px;
 }
 
 #headerContent{
