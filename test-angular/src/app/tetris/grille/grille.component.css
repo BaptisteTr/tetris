@@ -83,12 +83,11 @@ section {
   display : flex;
   flex-direction: line;
   flex-wrap: wrap;
-  top: 50px;
   left: 50px;
 }
 
 #gameOver {
-  font-family: fantasy;
+  font-family: 'Press Start 2P';
   font-size:70px;
   color:crimson;
   position: absolute;

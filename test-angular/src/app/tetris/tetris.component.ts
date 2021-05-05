@@ -41,7 +41,19 @@ export class TetrisComponent implements OnInit,AfterViewInit  {
   }
 
   leftHandler(){
-    this.grille.triggerLeft();
+    this.grille.onArrowLeft();
+  }
+
+  rightHandler(){
+    this.grille.onArrowRight();
+  }
+
+  downHandler(){
+    this.grille.onArrowDown();
+  }
+
+  rotateHandler(){
+    this.grille.onSpaceBar();
   }
 
   scoreChangedHandler(score:Score){
