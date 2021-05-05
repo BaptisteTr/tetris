@@ -18,7 +18,7 @@ export class CommandBarComponent implements OnInit {
   }
 
   triggerLeft(){
-    this.left.emit();
+    this.left.emit("left");
   }
   triggerRight(){
     this.right.emit();

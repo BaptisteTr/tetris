@@ -6,7 +6,7 @@
     <app-next-tetromino [tetromino]="this.nextTetromino"></app-next-tetromino>
 
     <app-score-counter [score]="this.score"></app-score-counter>
-    <app-command-bar></app-command-bar>
+    <app-command-bar (left)="leftHandler()" (right)="rightHandler()" (down)="downHandler()" (rotate)="rotateHandler()" ></app-command-bar>
   </div>
 
 </section>
