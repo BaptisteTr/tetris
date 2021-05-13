@@ -21,9 +21,12 @@ export class GrilleComponent implements OnInit {
   private tcurrent: any;
   public isGameOver: boolean;
   displayGameOver: string;
+  displayPause: string;
+  pause: boolean = false;
 
   @Output() tetrominoChanged =  new EventEmitter<Tetromino>();
   @Output() scoreChanged =  new EventEmitter<Score>();
+
 
 
   constructor() {
@@ -34,6 +37,7 @@ export class GrilleComponent implements OnInit {
     this.speedValue =  725;
     this.isGameOver = false;
     this.displayGameOver = "none";
+    this.displayPause = "none";
   }
 
   async ngOnInit() {
@@ -51,8 +55,9 @@ export class GrilleComponent implements OnInit {
   }
 
   gameplayLoop(){
-    if(this.isGameOver == false){
+    if(this.isGameOver == false && this.pause == false){
       this.displayGameOver="none";
+      this.displayPause="none";
       this.tcurrent = performance.now();
 
       if(this.tcurrent - this.tLastDown >= this.speedValue){
@@ -73,7 +78,11 @@ export class GrilleComponent implements OnInit {
         this.cleanCompletedLines();
       }
     } else {
-      this.displayGameOver="block";
+      if(this.isGameOver){
+        this.displayGameOver="block";
+      } else if(this.pause){
+        this.displayPause="block";
+      }
     }
   }
 
@@ -143,6 +152,29 @@ export class GrilleComponent implements OnInit {
     this.currentTetromino.lock(this.grid);
   }
 
+  onPause(){
+    if(this.pause){
+      this.pause = false;
+    } else {
+      this.pause = true;
+    }
+  }
+
+  restart(){
+    this.currentTetromino = this.randomTetromino();
+    this.currentTetromino.setStartPosition();
+    this.nextTetromino = this.randomTetromino();
+    this.nextTetromino.setDefaultPosition();
+    this.speedValue =  725;
+    this.isGameOver = false;
+    this.displayGameOver = "none";
+    this.displayPause = "none";
+    this.grid.square_list.forEach(block => {block.filled = false});
+    this.tetrominoChanged.emit(this.nextTetromino);
+    this.score = new Score();
+    this.scoreChanged.emit(this.score);
+  }
+
 
   randomTetromino(): Tetromino {
     const tetrominos = [TetrominoI, TetrominoJ, TetrominoL, TetrominoO, TetrominoS, TetrominoT, TetrominoZ];
@@ -185,20 +217,22 @@ export class GrilleComponent implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-   if(event.key == "ArrowLeft"){
-    this.onArrowLeft();
-   } else if(event.key == "ArrowRight"){
-    this.onArrowRight();
-   } else if(event.key == "ArrowDown"){
-    this.onArrowDown();
-   } else if(event.key == "ArrowUp"){
-    //this.onArrowUp();
-   } else if(event.key == " "){
-    this.onSpaceBar();
-   } else if(event.key == "l"){
-    this.onL();
-   } else {
-     console.log(event.key);
-   }
+    if(!this.pause && !this.isGameOver) {
+      if(event.key == "ArrowLeft"){
+        this.onArrowLeft();
+      } else if(event.key == "ArrowRight"){
+        this.onArrowRight();
+      } else if(event.key == "ArrowDown"){
+        this.onArrowDown();
+      } else if(event.key == "ArrowUp"){
+        this.onSpaceBar();
+      } else if(event.key == " "){
+        this.onSpaceBar();
+      } else if(event.key == "l"){
+        this.onL();
+      } else {
+        console.log(event.key);
+      }
+    }
   }
 }

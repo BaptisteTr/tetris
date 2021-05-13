@@ -3,8 +3,6 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 0px;
   width: 128px;
-
-  /*TODO moduler dynamiquement la taille de la grille*/
   position: relative;
   border: 1px solid #050202;
 }

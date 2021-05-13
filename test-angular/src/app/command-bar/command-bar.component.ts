@@ -11,6 +11,8 @@ export class CommandBarComponent implements OnInit {
   @Output() right =  new EventEmitter<any>();
   @Output() down =  new EventEmitter<any>();
   @Output() rotate =  new EventEmitter<any>();
+  @Output() pause =  new EventEmitter<any>();
+  @Output() restart =  new EventEmitter<any>();
 
   constructor() { }
 
@@ -28,6 +30,12 @@ export class CommandBarComponent implements OnInit {
   }
   triggerRotate(){
     this.rotate.emit();
+  }
+  triggerPause(){
+    this.pause.emit();
+  }
+  triggerRestart(){
+    this.restart.emit();
   }
 
 }
