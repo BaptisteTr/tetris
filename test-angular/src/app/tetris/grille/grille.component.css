@@ -1,11 +1,7 @@
-
-
 .wrapper {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   gap: 0px;
-
-  /*TODO moduler dynamiquement la taille de la grille*/
   position: relative;
   border: 20px solid #3f3f3f;
   box-shadow: 0 0 100px 0 #000;
@@ -86,7 +82,7 @@ section {
   left: 50px;
 }
 
-#gameOver {
+#gameOver, #pause {
   font-family: 'Press Start 2P';
   font-size:70px;
   color:crimson;

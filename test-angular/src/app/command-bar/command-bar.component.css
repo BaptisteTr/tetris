@@ -27,7 +27,6 @@ img {
 
 
 .wrapper{
-  height: 90px;
   width: 200px;
   display: flex;
   justify-content: center;
@@ -43,3 +42,12 @@ img {
   height: 0;
   width: 200px;
 }
+
+#pause {
+  width: 200px;
+}
+
+#restart {
+  align-self: flex-end;
+}
+

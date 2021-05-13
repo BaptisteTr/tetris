@@ -17,6 +17,8 @@ export class TetrisComponent implements OnInit,AfterViewInit  {
   public right:any;
   public down:any;
   public rotate:any;
+  public pause:any;
+  public restart:any;
 
   @ViewChild(GrilleComponent)
   private grille: any;
@@ -54,6 +56,14 @@ export class TetrisComponent implements OnInit,AfterViewInit  {
 
   rotateHandler(){
     this.grille.onSpaceBar();
+  }
+
+  pauseHandler(){
+    this.grille.onPause();
+  }
+
+  restartHandler(){
+    this.grille.restart();
   }
 
   scoreChangedHandler(score:Score){
