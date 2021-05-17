@@ -56,8 +56,8 @@ img {
 
 @media screen and (max-width: 780px){
   .button {
-    width: 8vh;
-    height: 8vh;
+    width: min(8vh,15vw);
+    height:  min(8vh,15vw);
     border-radius: 2px;
     border-width: 3px;
     border-style: outset;
