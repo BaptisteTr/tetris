@@ -19,8 +19,7 @@ section {
 @media screen and (max-width: 780px){
   #commandBar {
     order: -1;
-<<<<<<< HEAD
-=======
+
     width:60%;
   }
 
@@ -47,6 +46,5 @@ section {
 
   #nextTetromino{
     width:40%;
->>>>>>> origin/gh-pages
   }
 }
