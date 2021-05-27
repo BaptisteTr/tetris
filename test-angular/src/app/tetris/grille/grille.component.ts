@@ -23,7 +23,6 @@ export class GrilleComponent implements OnInit {
   displayGameOver: string;
   displayPause: string;
   pause: boolean = false;
-
   @Output() tetrominoChanged =  new EventEmitter<Tetromino>();
   @Output() scoreChanged =  new EventEmitter<Score>();
 
